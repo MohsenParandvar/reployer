@@ -1,21 +1,21 @@
 package config
 
 import (
-	"log"
 	"os"
 
 	"github.com/goccy/go-yaml"
 )
 
-func (conf *Config) LoadConfig(configPath string) *Config {
+func Load(configPath string) (*Config, error) {
+	var conf Config
 	yamlFile, err := os.ReadFile(configPath)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	err = yaml.Unmarshal(yamlFile, conf)
+	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return conf
+	return &conf, nil
 }

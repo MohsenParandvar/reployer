@@ -8,7 +8,7 @@ type Service struct {
 	Name     string `yaml:"name"`
 	Image    string `yaml:"image"`
 	Deployer string `yaml:"deployer"`
-	Spec     []Spec `yaml:"spec"`
+	Spec     Spec   `yaml:"spec"`
 }
 
 type Config struct {
