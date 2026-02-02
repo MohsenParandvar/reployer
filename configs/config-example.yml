@@ -6,4 +6,4 @@ services:
     image: deployer
     deplyer: compose
     spec:
-      file: compose.yml
+      file: docker-compose.yml
