@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/MohsenParandvar/reployer/internal/config"
+	"github.com/MohsenParandvar/reployer/internal/docker"
 )
 
 type Engine struct {
@@ -20,8 +21,19 @@ func New(configs *config.Config) *Engine {
 }
 
 func (e *Engine) Check(ctx context.Context) error {
-	for i, service := range e.cfg.Services {
-		fmt.Println(i, service.Name)
+	for _, service := range e.cfg.Services {
+		switch service.Deployer {
+		case "compose":
+			composeServices, err := docker.GetComposeServices(service.Spec.File)
+
+			if err != nil {
+				return err
+			}
+
+			if csName, csExists := composeServices[service.Name]; csExists {
+				fmt.Println(csName)
+			}
+		}
 	}
 
 	return nil
