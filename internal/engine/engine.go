@@ -20,6 +20,9 @@ func New(configs *config.Config) *Engine {
 }
 
 func (e *Engine) Check(ctx context.Context) error {
-	fmt.Println("hello")
+	for i, service := range e.cfg.Services {
+		fmt.Println(i, service.Name)
+	}
+
 	return nil
 }

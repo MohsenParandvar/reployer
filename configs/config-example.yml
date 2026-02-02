@@ -2,8 +2,8 @@ interval_seconds: 10
 
 services:
   - app:
-      name: hello
-      image: deployer
-      deplyer: compose
-      spec:
-        file: compose.yml
+    name: hello
+    image: deployer
+    deplyer: compose
+    spec:
+      file: compose.yml
