@@ -26,6 +26,7 @@ func main() {
 
 	sch := scheduler.New(time.Duration(configs.IntervalSeconds) * time.Second)
 
+	log.Println("Starting...")
 	err = sch.Run(ctx, func(ctx context.Context) error {
 		return eng.Check(ctx)
 	})

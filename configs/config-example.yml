@@ -1,9 +1,9 @@
 interval_seconds: 10
 
 services:
-  - app:
-    name: hello
+  - api:
+    name: api
     image: deployer
-    deplyer: compose
+    deployer: compose
     spec:
-      file: docker-compose.yml
+      file: configs/docker-compose-example.yml

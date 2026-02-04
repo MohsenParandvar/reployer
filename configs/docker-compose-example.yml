@@ -1,0 +1,6 @@
+services:
+  api:
+    image: hello-world
+  
+  db:
+    image: mysql
