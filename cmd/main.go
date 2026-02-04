@@ -24,15 +24,17 @@ func main() {
 
 	eng := engine.New(configs)
 
-	sch := scheduler.New(time.Duration(configs.IntervalSeconds) * time.Second)
+	if cliFlags.Daemon {
+		sch := scheduler.New(time.Duration(configs.IntervalSeconds) * time.Second)
 
-	log.Println("Starting...")
-	err = sch.Run(ctx, func(ctx context.Context) error {
-		return eng.Check(ctx)
-	})
+		log.Println("Daemon Starting...")
+		err = sch.Run(ctx, func(ctx context.Context) error {
+			return eng.Check(ctx)
+		})
 
-	if err != nil {
-		log.Println(err)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
 	fmt.Println(configs.IntervalSeconds)

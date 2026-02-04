@@ -1,8 +1,8 @@
 interval_seconds: 10
 
 services:
-  - api:
-    name: api
+  - nginx:
+    name: web
     image: deployer
     deployer: compose
     spec:
