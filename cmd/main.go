@@ -36,7 +36,7 @@ func main() {
 		})
 
 		if err != nil {
-			logger.Error("", "error", err)
+			logger.Error("Daemon engine returns error", "error", err)
 		}
 	}
 

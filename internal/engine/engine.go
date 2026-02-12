@@ -2,6 +2,7 @@ package engine
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 
 	"github.com/MohsenParandvar/reployer/internal/config"
@@ -44,9 +45,18 @@ func (e *Engine) Check(ctx context.Context) error {
 					if service.Policy == "update" {
 						e.log.Info("Start Deploying", "service", service.Name)
 
-						if err := docker.ComposeDeploy(service.Spec.File, service.Name); err != nil {
-							return err
+						if err := docker.PullComposeImage(service.Spec.File, service.Name); err != nil {
+							return errors.New("can not pull docker image")
 						}
+
+						e.log.Info("Image pulled from remote registry", "image", csName, "service", service.Name)
+						e.log.Info("Restarting container", "service", service.Name)
+
+						if err := docker.RestartContainer(service.Spec.File, service.Name); err != nil {
+							return errors.New("container restarting failed")
+						}
+
+						e.log.Info("Container restarted", "service", service.Name)
 					}
 				}
 			}
