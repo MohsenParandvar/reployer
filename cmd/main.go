@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"os"
 	"time"
@@ -40,7 +39,5 @@ func main() {
 			logger.Error("", "error", err)
 		}
 	}
-
-	fmt.Println(configs.IntervalSeconds)
 
 }

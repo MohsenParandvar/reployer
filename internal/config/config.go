@@ -8,6 +8,7 @@ type Service struct {
 	Name     string `yaml:"name"`
 	Image    string `yaml:"image"`
 	Deployer string `yaml:"deployer"`
+	Policy   string `yaml:"update_policy"`
 	Spec     Spec   `yaml:"spec"`
 }
 

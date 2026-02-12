@@ -39,7 +39,11 @@ func (e *Engine) Check(ctx context.Context) error {
 				}
 
 				if !digestMatch {
-					e.log.Info("new image found for service", "service", csName)
+					e.log.Info("new image found for", "service", csName, "update_policy", service.Policy)
+
+					if service.Policy == "update" {
+
+					}
 				}
 			}
 		}
