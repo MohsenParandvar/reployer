@@ -31,7 +31,14 @@ func (e *Engine) Check(ctx context.Context) error {
 			}
 
 			if csName, csExists := composeServices[service.Name]; csExists {
-				fmt.Println(csName)
+				digestMatch, err := docker.CompareDigest(ctx, csName)
+				if err != nil {
+					return err
+				}
+
+				if !digestMatch {
+					fmt.Println(csName, "have update now")
+				}
 			}
 		}
 	}

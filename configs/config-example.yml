@@ -3,7 +3,7 @@ interval_seconds: 10
 services:
   - nginx:
     name: web
-    image: deployer
+    image: nginx
     deployer: compose
     spec:
       file: configs/docker-compose-example.yml
