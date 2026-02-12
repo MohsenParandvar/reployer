@@ -39,10 +39,14 @@ func (e *Engine) Check(ctx context.Context) error {
 				}
 
 				if !digestMatch {
-					e.log.Info("new image found for", "service", csName, "update_policy", service.Policy)
+					e.log.Info("new image found for", "service", service.Name, "update_policy", service.Policy)
 
 					if service.Policy == "update" {
+						e.log.Info("Start Deploying", "service", service.Name)
 
+						if err := docker.ComposeDeploy(service.Spec.File, service.Name); err != nil {
+							return err
+						}
 					}
 				}
 			}
