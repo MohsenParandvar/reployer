@@ -3,7 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
+	"os"
 	"time"
 
 	"github.com/MohsenParandvar/reployer/cmd/flags"
@@ -16,24 +17,27 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	logger := slog.Default()
+
 	cliFlags := flags.ParseFlags()
 	configs, err := config.Load(cliFlags.ConfigPath)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("Can'not load config", "error", err)
+		os.Exit(1)
 	}
 
-	eng := engine.New(configs)
+	eng := engine.New(configs, logger)
 
 	if cliFlags.Daemon {
 		sch := scheduler.New(time.Duration(configs.IntervalSeconds) * time.Second)
 
-		log.Println("Daemon Starting...")
+		logger.Info("Daemon Starting...")
 		err = sch.Run(ctx, func(ctx context.Context) error {
 			return eng.Check(ctx)
 		})
 
 		if err != nil {
-			log.Println(err)
+			logger.Error("", "error", err)
 		}
 	}
 

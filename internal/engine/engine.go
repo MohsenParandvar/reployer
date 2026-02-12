@@ -2,7 +2,7 @@ package engine
 
 import (
 	"context"
-	"fmt"
+	"log/slog"
 
 	"github.com/MohsenParandvar/reployer/internal/config"
 	"github.com/MohsenParandvar/reployer/internal/docker"
@@ -11,12 +11,14 @@ import (
 type Engine struct {
 	cfg   *config.Config
 	state map[string]string
+	log   *slog.Logger
 }
 
-func New(configs *config.Config) *Engine {
+func New(configs *config.Config, logger *slog.Logger) *Engine {
 	return &Engine{
 		cfg:   configs,
 		state: make(map[string]string),
+		log:   logger,
 	}
 }
 
@@ -37,7 +39,7 @@ func (e *Engine) Check(ctx context.Context) error {
 				}
 
 				if !digestMatch {
-					fmt.Println(csName, "have update now")
+					e.log.Info("new image found for service", "service", csName)
 				}
 			}
 		}
