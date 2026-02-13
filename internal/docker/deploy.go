@@ -1,7 +1,13 @@
 package docker
 
 import (
+	"context"
+	"errors"
+	"log/slog"
 	"os/exec"
+
+	"github.com/MohsenParandvar/reployer/internal/config"
+	"github.com/MohsenParandvar/reployer/internal/docker"
 )
 
 func PullComposeImage(composeFile string, serviceName string) error {
@@ -19,6 +25,44 @@ func RestartContainer(composeFile string, serviceName string) error {
 
 	if err := command.Run(); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func DeployComposeService(ctx context.Context, service config.Service, logger *slog.Logger) error {
+	composeServices, err := docker.GetComposeServices(service.Spec.File)
+
+	if err != nil {
+		return err
+	}
+
+	if csName, csExists := composeServices[service.Name]; csExists {
+		digestMatch, err := docker.CompareDigest(ctx, csName)
+		if err != nil {
+			return err
+		}
+
+		if !digestMatch {
+			logger.Info("new image found for", "service", service.Name, "update_policy", service.Policy)
+
+			if service.Policy == "update" {
+				logger.Info("Start Deploying", "service", service.Name)
+
+				if err := docker.PullComposeImage(service.Spec.File, service.Name); err != nil {
+					return errors.New("can not pull docker image")
+				}
+
+				logger.Info("Image pulled from remote registry", "image", csName, "service", service.Name)
+				logger.Info("Restarting container", "service", service.Name)
+
+				if err := docker.RestartContainer(service.Spec.File, service.Name); err != nil {
+					return errors.New("container restarting failed")
+				}
+
+				logger.Info("Container restarted", "service", service.Name)
+			}
+		}
 	}
 
 	return nil

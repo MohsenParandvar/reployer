@@ -51,6 +51,7 @@ func main() {
 			os.Exit(1)
 		}
 
+		eng.ManualDeploy(ctx, cliFlags.Service, cliFlags.Tag)
 	}
 
 }

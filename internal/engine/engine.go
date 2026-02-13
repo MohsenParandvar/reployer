@@ -27,41 +27,36 @@ func (e *Engine) Check(ctx context.Context) error {
 	for _, service := range e.cfg.Services {
 		switch service.Deployer {
 		case "compose":
-			composeServices, err := docker.GetComposeServices(service.Spec.File)
-
-			if err != nil {
+			if err := docker.DeployComposeService(ctx, service, e.log); err != nil {
 				return err
-			}
-
-			if csName, csExists := composeServices[service.Name]; csExists {
-				digestMatch, err := docker.CompareDigest(ctx, csName)
-				if err != nil {
-					return err
-				}
-
-				if !digestMatch {
-					e.log.Info("new image found for", "service", service.Name, "update_policy", service.Policy)
-
-					if service.Policy == "update" {
-						e.log.Info("Start Deploying", "service", service.Name)
-
-						if err := docker.PullComposeImage(service.Spec.File, service.Name); err != nil {
-							return errors.New("can not pull docker image")
-						}
-
-						e.log.Info("Image pulled from remote registry", "image", csName, "service", service.Name)
-						e.log.Info("Restarting container", "service", service.Name)
-
-						if err := docker.RestartContainer(service.Spec.File, service.Name); err != nil {
-							return errors.New("container restarting failed")
-						}
-
-						e.log.Info("Container restarted", "service", service.Name)
-					}
-				}
 			}
 		}
 	}
 
 	return nil
+}
+
+func (e *Engine) ManualDeploy(ctx context.Context, serviceName string, tag string) error {
+	for _, service := range e.cfg.Services {
+		if service.Name == serviceName {
+			switch service.Deployer {
+			case "compose":
+				if tag != "" {
+					e.log.Info("Changing image tag", "service", serviceName, "tag", tag)
+
+					if err := docker.ChangeServiceTag(service.Spec.File, serviceName, tag); err != nil {
+						return err
+					}
+
+					e.log.Info("Image tag changed successfully", "service", serviceName, "tag", tag)
+				}
+
+				if err := docker.DeployComposeService(ctx, service, e.log); err != nil {
+					return err
+				}
+				return nil
+			}
+		}
+	}
+	return errors.New("Service not found")
 }
