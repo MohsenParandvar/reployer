@@ -33,3 +33,7 @@ func GetComposeServices(composeFilePath string) (map[string]string, error) {
 
 	return images, nil
 }
+
+func ChangeServiceTag(composeFilePath string, serviceName string, tag string) error {
+	return nil
+}

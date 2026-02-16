@@ -28,6 +28,11 @@ func main() {
 	eng := engine.New(configs, logger)
 
 	if cliFlags.Daemon {
+		if cliFlags.Update {
+			logger.Error("Dont use the -daemon and -update in the same time")
+			os.Exit(1)
+		}
+
 		sch := scheduler.New(time.Duration(configs.IntervalSeconds) * time.Second)
 
 		logger.Info("Daemon Mode Started...")
@@ -38,6 +43,15 @@ func main() {
 		if err != nil {
 			logger.Error("Daemon engine returns error", "error", err)
 		}
+	}
+
+	if cliFlags.Update {
+		if cliFlags.Service == "" {
+			logger.Info("Set the -service for update")
+			os.Exit(1)
+		}
+
+		eng.ManualDeploy(ctx, cliFlags.Service, cliFlags.Tag)
 	}
 
 }
