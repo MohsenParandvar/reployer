@@ -21,7 +21,7 @@ func main() {
 	cliFlags := flags.ParseFlags()
 	configs, err := config.Load(cliFlags.ConfigPath)
 	if err != nil {
-		logger.Error("Can'not load config", "error", err)
+		logger.Error(err.Error())
 		os.Exit(1)
 	}
 
@@ -41,7 +41,7 @@ func main() {
 		}, logger)
 
 		if err != nil {
-			logger.Error("Daemon engine returns error", "error", err)
+			logger.Error(err.Error())
 		}
 	}
 
