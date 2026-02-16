@@ -30,10 +30,10 @@ func main() {
 	if cliFlags.Daemon {
 		sch := scheduler.New(time.Duration(configs.IntervalSeconds) * time.Second)
 
-		logger.Info("Daemon Starting...")
+		logger.Info("Daemon Mode Started...")
 		err = sch.Run(ctx, func(ctx context.Context) error {
 			return eng.Check(ctx)
-		})
+		}, logger)
 
 		if err != nil {
 			logger.Error("Daemon engine returns error", "error", err)
