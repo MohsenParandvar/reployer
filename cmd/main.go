@@ -54,4 +54,7 @@ func main() {
 		eng.ManualDeploy(ctx, cliFlags.Service, cliFlags.Tag)
 	}
 
+	if !cliFlags.Daemon && !cliFlags.Update {
+		logger.Info("Use -daemon for starting daemon mode and -update for update container mannually")
+	}
 }
