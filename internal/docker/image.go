@@ -2,6 +2,7 @@ package docker
 
 import (
 	"context"
+	"errors"
 
 	"github.com/MohsenParandvar/reployer/internal/errs"
 	"github.com/google/go-containerregistry/pkg/name"
@@ -17,6 +18,7 @@ func GetLocalImageDigest(imageName string) (string, error) {
 
 	localImage, err := daemon.Image(ref)
 	if err != nil {
+		errs.ErrDockerDeamon = errors.New(err.Error())
 		return "", errs.ErrDockerDeamon
 	}
 

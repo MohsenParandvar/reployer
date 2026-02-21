@@ -1,6 +1,6 @@
 services:
   web:
-    image: mio:mio #axrat
+    image: nginx:latest
     ports:
       - "8080:80"
   db:

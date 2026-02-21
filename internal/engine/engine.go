@@ -48,12 +48,16 @@ func (e *Engine) ManualDeploy(ctx context.Context, serviceName string, tag strin
 						return err
 					}
 
-					e.log.Info("Image tag changed successfully", "service", serviceName, "tag", tag)
+					e.log.Info("Image tag changed", "service", serviceName, "tag", tag)
 				}
+
+				e.log.Info("Starting deploy", "service", serviceName)
 
 				if err := docker.DeployComposeService(ctx, service, e.log); err != nil {
 					return err
 				}
+				e.log.Info("Image deployed", "service", serviceName)
+
 				return nil
 			}
 		}

@@ -49,7 +49,7 @@ func DeployComposeService(ctx context.Context, service config.Service, logger *s
 				logger.Info("Start Deploying", "service", service.Name)
 
 				if err := PullComposeImage(service.Spec.File, service.Name); err != nil {
-					return errors.New("can not pull docker image")
+					return err
 				}
 
 				logger.Info("Image pulled from remote registry", "image", csName, "service", service.Name)

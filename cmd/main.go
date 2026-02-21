@@ -51,7 +51,9 @@ func main() {
 			os.Exit(1)
 		}
 
-		eng.ManualDeploy(ctx, cliFlags.Service, cliFlags.Tag)
+		if err := eng.ManualDeploy(ctx, cliFlags.Service, cliFlags.Tag); err != nil {
+			logger.Error(err.Error())
+		}
 	}
 
 	if !cliFlags.Daemon && !cliFlags.Update {
