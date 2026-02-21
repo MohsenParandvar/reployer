@@ -2,8 +2,6 @@ module github.com/MohsenParandvar/reployer
 
 go 1.25.5
 
-require github.com/goccy/go-yaml v1.19.2
-
 require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
@@ -35,4 +33,5 @@ require (
 	go.opentelemetry.io/otel/trace v1.36.0 // indirect
 	golang.org/x/sync v0.18.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

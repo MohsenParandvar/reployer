@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 
-	"github.com/goccy/go-yaml"
+	"gopkg.in/yaml.v3"
 )
 
 func Load(configPath string) (*Config, error) {

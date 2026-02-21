@@ -3,7 +3,7 @@ package docker
 import (
 	"os"
 
-	"github.com/goccy/go-yaml"
+	"gopkg.in/yaml.v3"
 )
 
 type ComposeService struct {
@@ -35,5 +35,10 @@ func GetComposeServices(composeFilePath string) (map[string]string, error) {
 }
 
 func ChangeServiceTag(composeFilePath string, serviceName string, tag string) error {
-	return nil
+	file, err := os.ReadFile(composeFilePath)
+
+	if err != nil {
+		return err
+	}
+
 }
