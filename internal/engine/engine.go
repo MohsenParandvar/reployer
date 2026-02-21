@@ -2,11 +2,11 @@ package engine
 
 import (
 	"context"
-	"errors"
 	"log/slog"
 
 	"github.com/MohsenParandvar/reployer/internal/config"
 	"github.com/MohsenParandvar/reployer/internal/docker"
+	"github.com/MohsenParandvar/reployer/internal/errs"
 )
 
 type Engine struct {
@@ -58,5 +58,5 @@ func (e *Engine) ManualDeploy(ctx context.Context, serviceName string, tag strin
 			}
 		}
 	}
-	return errors.New("Service not found")
+	return errs.ErrServiceNotFound
 }
