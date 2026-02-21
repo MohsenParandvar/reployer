@@ -10,7 +10,7 @@ import (
 )
 
 func PullComposeImage(composeFile string, serviceName string) error {
-	command := exec.Command("docker-compose", "-f", composeFile, "pull", serviceName)
+	command := exec.Command("docker", "compose", "-f", composeFile, "pull", serviceName)
 
 	if err := command.Run(); err != nil {
 		return err
@@ -20,7 +20,7 @@ func PullComposeImage(composeFile string, serviceName string) error {
 }
 
 func RestartContainer(composeFile string, serviceName string) error {
-	command := exec.Command("docker-compose", "-f", composeFile, "up", "-d", serviceName)
+	command := exec.Command("docker", "compose", "-f", composeFile, "up", "-d", serviceName)
 
 	if err := command.Run(); err != nil {
 		return err
