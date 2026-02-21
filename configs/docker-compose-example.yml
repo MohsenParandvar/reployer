@@ -1,9 +1,8 @@
 services:
   web:
-    image: nginx:latest
+    image: mio:mio #axrat
     ports:
       - "8080:80"
-
   db:
     image: postgres:latest
     environment:
