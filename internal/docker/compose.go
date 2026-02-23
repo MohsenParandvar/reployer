@@ -73,6 +73,12 @@ func ChangeServiceTag(composeFilePath string, serviceName string, tag string) er
 		return err
 	}
 
+	// Make backup from main file
+	if err := os.Rename(composeFilePath, composeFilePath+".backup"); err != nil {
+		return err
+	}
+
+	// Rename the temp file to target file
 	if err := os.Rename(tempFilePath, composeFilePath); err != nil {
 		return err
 	}
