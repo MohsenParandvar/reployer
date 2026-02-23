@@ -120,6 +120,10 @@ func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
 		return err
 	}
 
+	if image.Kind != yaml.ScalarNode {
+		return errs.ErrInvalidImageNode
+	}
+
 	image.Value = strings.TrimSpace(image.Value)
 
 	// image digest is not supported
