@@ -126,6 +126,10 @@ func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
 
 	image.Value = strings.TrimSpace(image.Value)
 
+	if image.Value == "" {
+		return errs.ErrEmptyImage
+	}
+
 	// image digest is not supported
 	if strings.Contains(image.Value, "@") {
 		return errs.ErrDigestImageNotSupported

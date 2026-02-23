@@ -9,6 +9,7 @@ var (
 	ErrServiceNotFound         = errors.New("Service not found")
 	ErrNotMappingNode          = errors.New("Can't find a mapping node")
 	ErrInvalidImageNode        = errors.New("Invalid image node")
+	ErrEmptyImage              = errors.New("Empty image")
 	ErrDigestImageNotSupported = errors.New("Image digest not supported")
 	ErrRollBackFailed          = errors.New("Rollback failed")
 )
