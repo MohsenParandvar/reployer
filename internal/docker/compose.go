@@ -109,6 +109,11 @@ func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
 		return err
 	}
 
+	// image digest is not supported
+	if strings.Contains(image.Value, "@") {
+		return errs.ErrDigestImageNotSupported
+	}
+
 	splittedImage := strings.LastIndex(image.Value, ":")
 
 	image.Kind = yaml.ScalarNode
