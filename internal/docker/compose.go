@@ -92,6 +92,10 @@ func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
 		return err
 	}
 
+	if service.Kind != yaml.MappingNode {
+		return errs.ErrNotMappingNode
+	}
+
 	image, err := FindMappingChild(service, "image")
 	if err != nil {
 		return err
@@ -113,7 +117,7 @@ func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
 
 func FindMappingChild(node *yaml.Node, key string) (*yaml.Node, error) {
 	if node == nil || node.Kind != yaml.MappingNode {
-		return nil, errs.ErrServiceMappingNode
+		return nil, errs.ErrNotMappingNode
 	}
 
 	for i := 0; i < len(node.Content); i += 2 {
