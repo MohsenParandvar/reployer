@@ -136,5 +136,5 @@ func FindMappingChild(node *yaml.Node, key string) (*yaml.Node, error) {
 		}
 	}
 
-	return nil, errs.ErrServiceNotFound
+	return nil, errs.ErrKeyNotFound
 }
