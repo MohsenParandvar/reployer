@@ -65,11 +65,19 @@ func ChangeServiceTag(composeFilePath string, serviceName string, tag string) er
 		return err
 	}
 
+	if err := encoder.Close(); err != nil {
+		return err
+	}
+
+	if err := tempFile.Close(); err != nil {
+		return err
+	}
+
 	if err := os.Rename(tempFilePath, composeFilePath); err != nil {
 		return err
 	}
 
-	return encoder.Close()
+	return nil
 }
 
 func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
