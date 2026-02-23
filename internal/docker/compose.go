@@ -90,11 +90,16 @@ func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
 		return err
 	}
 
-	splittedImage := strings.Split(image.Value, ":")
+	splittedImage := strings.LastIndex(image.Value, ":")
 
 	image.Kind = yaml.ScalarNode
 	image.Tag = "!!str"
-	image.Value = splittedImage[0] + ":" + tag
+
+	if splittedImage == -1 {
+		image.Value = image.Value + ":" + tag
+	} else {
+		image.Value = image.Value[:splittedImage+1] + tag
+	}
 
 	return nil
 }
