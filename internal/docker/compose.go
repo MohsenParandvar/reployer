@@ -51,17 +51,24 @@ func ChangeServiceTag(composeFilePath string, serviceName string, tag string) er
 		return err
 	}
 
-	exportFile, err := os.Create(composeFilePath)
+	tempFilePath := composeFilePath + ".tmp"
+
+	tempFile, err := os.Create(tempFilePath)
 	if err != nil {
 		return err
 	}
 
-	encoder := yaml.NewEncoder(exportFile)
+	encoder := yaml.NewEncoder(tempFile)
 	encoder.SetIndent(2)
 	if err := encoder.Encode(&node); err != nil {
 		encoder.Close()
 		return err
 	}
+
+	if err := os.Rename(tempFilePath, composeFilePath); err != nil {
+		return err
+	}
+
 	return encoder.Close()
 }
 
