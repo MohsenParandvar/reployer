@@ -84,7 +84,7 @@ func SetServiceImage(node *yaml.Node, serviceName string, tag string) error {
 	}
 
 	if services.Kind != yaml.MappingNode {
-		return errs.ErrServiceMappingNode
+		return errs.ErrNotMappingNode
 	}
 
 	service, err := FindMappingChild(services, serviceName)
