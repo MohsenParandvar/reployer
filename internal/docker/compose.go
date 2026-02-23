@@ -52,6 +52,7 @@ func ChangeServiceTag(composeFilePath string, serviceName string, tag string) er
 	}
 
 	tempFilePath := composeFilePath + ".tmp"
+	defer os.Remove(tempFilePath)
 
 	tempFile, err := os.Create(tempFilePath)
 	if err != nil {
@@ -73,13 +74,17 @@ func ChangeServiceTag(composeFilePath string, serviceName string, tag string) er
 		return err
 	}
 
-	// Make backup from main file
+	// Make backup from original file
 	if err := os.Rename(composeFilePath, composeFilePath+".backup"); err != nil {
 		return err
 	}
 
 	// Rename the temp file to target file
+	// and rollback original file if failed
 	if err := os.Rename(tempFilePath, composeFilePath); err != nil {
+		if err := os.Rename(composeFilePath+".backup", composeFilePath); err != nil {
+			return errs.ErrRollBackFailed
+		}
 		return err
 	}
 
