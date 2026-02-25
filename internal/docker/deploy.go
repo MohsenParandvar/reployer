@@ -43,7 +43,7 @@ func DeployComposeService(ctx context.Context, service config.Service, logger *s
 		}
 
 		if !digestMatch {
-			logger.Info("new image found for", "service", service.Name, "update_policy", service.Policy)
+			logger.Info("New image found for", "service", service.Name, "update_policy", service.Policy)
 
 			if service.Policy == "update" {
 				logger.Info("Start Deploying", "service", service.Name)
