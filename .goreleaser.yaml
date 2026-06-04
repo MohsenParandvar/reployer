@@ -11,7 +11,7 @@ builds:
     goarch:
       - amd64
       - arm64
-    main: ./cmd/reployer 
+    main: ./cmd/main.go
 
 archives:
   - format: tar.gz
