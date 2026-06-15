@@ -8,3 +8,6 @@ services:
     update_policy: "update"
     spec:
       file: configs/docker-compose-example.yml
+    rollback:
+      enabled: true
+      timeout: 60 #Seconds

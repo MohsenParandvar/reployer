@@ -4,12 +4,18 @@ type Spec struct {
 	File string `yaml:"file"`
 }
 
+type Rollback struct {
+	Enabled bool `yaml:"enabled"`
+	Timeout int  `yaml:"timeout"`
+}
+
 type Service struct {
-	Name     string `yaml:"name"`
-	Image    string `yaml:"image"`
-	Deployer string `yaml:"deployer"`
-	Policy   string `yaml:"update_policy"`
-	Spec     Spec   `yaml:"spec"`
+	Name     string   `yaml:"name"`
+	Image    string   `yaml:"image"`
+	Deployer string   `yaml:"deployer"`
+	Policy   string   `yaml:"update_policy"`
+	Spec     Spec     `yaml:"spec"`
+	Rollback Rollback `yaml:"rollback"`
 }
 
 type Config struct {
