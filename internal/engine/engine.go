@@ -56,6 +56,11 @@ func (e *Engine) ManualDeploy(ctx context.Context, serviceName string, tag strin
 				}
 				e.log.Info("Image deployed", "service", serviceName)
 
+				if service.Rollback.Enabled {
+					e.log.Info("Rollback is enabled, waiting for image status...", "service", serviceName)
+					# [Todo] Rollback Process
+				}
+
 				return nil
 			}
 		}
