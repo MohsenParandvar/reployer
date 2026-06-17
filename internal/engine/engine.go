@@ -57,8 +57,15 @@ func (e *Engine) ManualDeploy(ctx context.Context, serviceName string, tag strin
 				e.log.Info("Image deployed", "service", serviceName)
 
 				if service.Rollback.Enabled {
-					e.log.Info("Rollback is enabled, waiting for image status...", "service", serviceName)
-					# [Todo] Rollback Process
+					e.log.Info("Rollback is enabled, waiting for container status...", "service", serviceName)
+
+					containerId, err := docker.CheckContainerHealth(ctx, service.Spec.File, serviceName)
+
+					if err != nil {
+						return err
+					}
+
+					e.log.Info("Container Founded", "container_id", containerId)
 				}
 
 				return nil

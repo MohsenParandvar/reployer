@@ -1,7 +1,9 @@
 package docker
 
 import (
+	"context"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/MohsenParandvar/reployer/internal/errs"
@@ -14,6 +16,32 @@ type ComposeService struct {
 
 type ComposeFile struct {
 	Services map[string]ComposeService `yaml:"services"`
+}
+
+func GetContainerID(ctx context.Context, composeFilePath string, serviceName string) (string, error) {
+	cmd := exec.CommandContext(ctx, "docker", "compose", "-f", composeFilePath, "ps", "-q", serviceName)
+	id, err := cmd.Output()
+
+	if err != nil {
+		return "", errs.ErrCantGetContainerId
+	}
+
+	idString := strings.TrimSpace(string(id))
+	if idString == "" {
+		return "", errs.ErrCantGetContainerId
+	}
+
+	return idString, nil
+}
+
+func CheckContainerHealth(ctx context.Context, ComposeFile string, serviceName string) (string, error) {
+	containerId, err := GetContainerID(ctx, ComposeFile, serviceName)
+
+	if err != nil {
+		return "", err
+	}
+
+	return containerId, nil
 }
 
 func GetComposeServices(composeFilePath string) (map[string]string, error) {

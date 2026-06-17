@@ -12,4 +12,5 @@ var (
 	ErrEmptyImage              = errors.New("Empty image")
 	ErrDigestImageNotSupported = errors.New("Image digest not supported")
 	ErrRollBackFailed          = errors.New("Rollback failed")
+	ErrCantGetContainerId      = errors.New("Can'not get container id")
 )
