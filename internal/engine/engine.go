@@ -59,13 +59,13 @@ func (e *Engine) ManualDeploy(ctx context.Context, serviceName string, tag strin
 				if service.Rollback.Enabled {
 					e.log.Info("Rollback is enabled, waiting for container status...", "service", serviceName)
 
-					containerId, err := docker.CheckContainerHealth(ctx, service.Spec.File, serviceName)
+					containerStatus, err := docker.CheckContainerHealth(ctx, service.Spec.File, serviceName)
 
 					if err != nil {
 						return err
 					}
 
-					e.log.Info("Container Founded", "container_id", containerId)
+					e.log.Info("Checking Container...", "status", containerStatus, "service", serviceName)
 				}
 
 				return nil

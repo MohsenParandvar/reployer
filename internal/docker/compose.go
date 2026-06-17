@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/MohsenParandvar/reployer/internal/errs"
+	"github.com/docker/go-sdk/container"
 	"gopkg.in/yaml.v3"
 )
 
@@ -41,7 +42,19 @@ func CheckContainerHealth(ctx context.Context, ComposeFile string, serviceName s
 		return "", err
 	}
 
-	return containerId, nil
+	ctr, err := container.FromID(ctx, nil, containerId)
+
+	if err != nil {
+		return "", err
+	}
+
+	state, err := ctr.State(ctx)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(state.Status), nil
 }
 
 func GetComposeServices(composeFilePath string) (map[string]string, error) {
